@@ -38,4 +38,11 @@ class TestWebsite:
         favorite = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'table')))
         assert favorite is not None, "Ошибка: Товар не добавлен в избранное."
 
-    #def test_remove_from_favorites(self, edgeDriver):
+    def test_remove_from_favorites(self, edgeDriver):
+        self.login(edgeDriver)
+        edgeDriver.get('https://ulyanovsk.220-volt.ru/profile/favorites/')
+        favorite_remove = edgeDriver.find_element(By.CSS_SELECTOR, 'a[class="del-favorite"]')
+        favorite_remove.click()
+        wait = WebDriverWait(edgeDriver, 10)
+        favorite = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'p:contains("Избранных товаров нет")')))
+        assert favorite is not None, "Ошибка: Товар не удалён из избранного."
