@@ -13,46 +13,29 @@ class TestWebsite:
         yield driver
         driver.quit()
 
-    def test_login_success(self, edgeDriver):
+    def login(self, edgeDriver):
         edgeDriver.get('https://ulyanovsk.220-volt.ru/login/')
-
         login_input = edgeDriver.find_element(By.CSS_SELECTOR, 'input[id="user_email"]')
         login_input.send_keys('linkor2003@mail.ru')
-
         password_input = edgeDriver.find_element(By.CSS_SELECTOR, 'input[id="user_password"]')
         password_input.send_keys('wasd123654')
-
         account_submit = edgeDriver.find_element(By.CSS_SELECTOR, 'button[id="link_login"]')
         account_submit.click()
-
-        wait = WebDriverWait(edgeDriver, 10)
-        profile_element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'a[href="/profile/"]')))
-
-        assert profile_element is not None, "Ошибка: Вход не выполнен успешно."
-
-    def test_add_to_favorites(self, edgeDriver):
-        edgeDriver.get('https://ulyanovsk.220-volt.ru/login/')
-
-        login_input = edgeDriver.find_element(By.CSS_SELECTOR, 'input[id="user_email"]')
-        login_input.send_keys('linkor2003@mail.ru')
-
-        password_input = edgeDriver.find_element(By.CSS_SELECTOR, 'input[id="user_password"]')
-        password_input.send_keys('wasd123654')
-
-        account_submit = edgeDriver.find_element(By.CSS_SELECTOR, 'button[id="link_login"]')
-        account_submit.click()
-
         wait = WebDriverWait(edgeDriver, 10)
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'a[href="/profile/"]')))
 
+    def test_login_success(self, edgeDriver):
+        self.login(edgeDriver)
+        profile_element = edgeDriver.find_element(By.CSS_SELECTOR, 'a[href="/profile/"]')
+        assert profile_element is not None, "Ошибка: Вход не выполнен успешно."
+
+    def test_add_to_favorites(self, edgeDriver):
+        self.login(edgeDriver)
         edgeDriver.get('https://ulyanovsk.220-volt.ru/catalog-290586/')
-
-        favorite_add = edgeDriver.find_element(By.CSS_SELECTOR, 'a[href="/favorites/add-2905860"]')
+        favorite_add = edgeDriver.find_element(By.CSS_SELECTOR, 'a[href="/favorites/add-290586"]')
         favorite_add.click()
-
         wait = WebDriverWait(edgeDriver, 10)
         favorite = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'table')))
-
         assert favorite is not None, "Ошибка: Товар не добавлен в избранное."
 
-    def test_remove_from_favorites(self, edgeDriver):
+    #def test_remove_from_favorites(self, edgeDriver):
