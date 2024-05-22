@@ -90,7 +90,6 @@ class TestWebsite:
         edgeDriver.get('https://ulyanovsk.220-volt.ru/catalog/akkumulyatornye-dreli-shurupoverty/')
         wait = WebDriverWait(edgeDriver, 10)
 
-        # Ожидание и клик по фильтру
         filter_element = wait.until(EC.element_to_be_clickable(
             (By.CSS_SELECTOR, 'a[href="/catalog/dreli-shurupoverty-akkumulyatornye-18-v/"]')))
         filter_element.click()
@@ -100,7 +99,6 @@ class TestWebsite:
         informations = []
         for product in products:
             try:
-                # Ищем элемент p внутри каждого li
                 info_element = product.find_element(By.CSS_SELECTOR,
                                                     'div.new-item-list-info-small.mvlspace-10 > p.text-small.text-lh-base')
                 informations.append(info_element.text)
